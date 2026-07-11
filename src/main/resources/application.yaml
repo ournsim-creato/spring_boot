@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: spring-boot-api-p-1
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Course1
+    username: postgres
+    password: Simkonbong11@&$
+
+  jpa:
+#    hibernate:
+#      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+        liquibase:
+          change-log:
+            classpath:db/changelog/db.changelog-master.yaml
+          enabled: true
