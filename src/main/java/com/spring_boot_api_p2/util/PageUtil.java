@@ -1,37 +1,59 @@
 package com.spring_boot_api_p2.util;
 
+import com.spring_boot_api_p2.dto.filter.BaseFilter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
-public interface PageUtil {
+public final class PageUtil {
 
-    int DEFAULT_PAGE_LIMIT = 20;
-    int DEFAULT_PAGE_NUMBER = 1;
-    int MAX_PAGE_LIMIT = 100;
-
-    String PAGE_LIMIT = "limit";
-    String PAGE_NUMBER = "page";
-
-    static Pageable getPageable(int pageNumber, int pageSize) {
-
-        if (pageNumber < DEFAULT_PAGE_NUMBER) {
-            pageNumber = DEFAULT_PAGE_NUMBER;
-        }
-
-        if (pageSize < 1) {
-            pageSize = DEFAULT_PAGE_LIMIT;
-        } else if (pageSize > MAX_PAGE_LIMIT) {
-            pageSize = MAX_PAGE_LIMIT;
-        }
-
-        return PageRequest.of(pageNumber - 1, pageSize);
+    private PageUtil() {
     }
 
-    static int safeParse(String value, int defaultValue) {
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            return defaultValue;
+    public static final int DEFAULT_PAGE = 1;
+    public static final int DEFAULT_SIZE = 20;
+    public static final int MAX_SIZE = 30;
+
+    public static Pageable getPageable(BaseFilter filter) {
+
+        int page = filter.getPage() == null
+                ? DEFAULT_PAGE
+                : filter.getPage();
+
+        int size = filter.getSize() == null
+                ? DEFAULT_SIZE
+                : filter.getSize();
+
+        if (page < 1) {
+            page = DEFAULT_PAGE;
         }
+
+        if (size <= 0) {
+            size = DEFAULT_SIZE;
+        }
+
+        if (size > MAX_SIZE) {
+            size = MAX_SIZE;
+        }
+
+        int pageIndex = page - 1;
+
+
+        if (filter.getSortBy() == null || filter.getSortBy().isBlank()) {
+            return PageRequest.of(pageIndex, size);
+        }
+
+
+        Sort.Direction direction =
+                "desc".equalsIgnoreCase(filter.getDirection())
+                        ? Sort.Direction.DESC
+                        : Sort.Direction.ASC;
+
+
+        return PageRequest.of(
+                pageIndex,
+                size,
+                Sort.by(direction, filter.getSortBy())
+        );
     }
 }
