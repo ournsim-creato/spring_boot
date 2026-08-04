@@ -1,8 +1,8 @@
 package com.spring_boot_api_p2.mapper;
 
 import com.spring_boot_api_p2.domain.entity.Role;
-import com.spring_boot_api_p2.dto.request.RoleRequest;
-import com.spring_boot_api_p2.dto.response.RoleResponse;
+import com.spring_boot_api_p2.feature.core.role.dto.request.RoleRequest;
+import com.spring_boot_api_p2.feature.core.role.dto.response.RoleResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

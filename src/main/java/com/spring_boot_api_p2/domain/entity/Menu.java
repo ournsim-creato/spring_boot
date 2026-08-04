@@ -1,12 +1,11 @@
 package com.spring_boot_api_p2.domain.entity;
-
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Table(name = "menu")
 @Data
-public class Menu {
+public class Menu extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

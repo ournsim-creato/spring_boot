@@ -1,0 +1,24 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 003-seed-admin-user
+      author: jpa
+      changes:
+        - insert:
+            tableName: app_user
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: username
+                  value: admin@example.com
+              - column:
+                  name: nick_name
+                  value: Admin
+              - column:
+                  name: password
+                  value: "$2y$10$cJY3UGLQasoi7MsLS1xvPuxNrjyNH7/b2Z9OvY0DSrq2m/BzDbjNu"
+              - column:
+                  name: enabled
+                  valueBoolean: true

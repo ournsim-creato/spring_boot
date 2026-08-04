@@ -1,7 +1,13 @@
 databaseChangeLog:
   - include:
       file: db/changelog/schema/0001_create_role_table.yml
+
   - include:
       file: db/changelog/schema/0002_create_app_user_table.yml
   - include:
-       file: db/changelog/schema/0003_create_menu_table.yml
+      file: db/changelog/schema/0003_seed_user_data.yml
+  - include:
+      file: db/changelog/schema/0004_create_menu_table.yml
+  - include:
+      file: db/changelog/schema/0005_create_user_role_table.yml
+

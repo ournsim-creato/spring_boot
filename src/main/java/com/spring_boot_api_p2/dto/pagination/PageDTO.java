@@ -12,7 +12,7 @@ public class PageDTO {
     private List<?> items;
     private PaginationDTO pagination;
 
-    public PageDTO(Page<?> page) {
+    public PageDTO(Page<?> page){
         this.items = page.getContent();
 
         int pageSize;
@@ -21,11 +21,10 @@ public class PageDTO {
         try {
             pageSize = page.getPageable().getPageSize();
             pageNumber = page.getPageable().getPageNumber();
-        } catch (UnsupportedOperationException e) {
+        }catch (UnsupportedOperationException e){
             pageSize = page.getNumberOfElements();
             pageNumber = 1;
         }
-
         this.pagination = PaginationDTO.builder()
                 .empty(page.isEmpty())
                 .first(page.isFirst())
@@ -37,4 +36,5 @@ public class PageDTO {
                 .numberOfElements(page.getNumberOfElements())
                 .build();
     }
+
 }

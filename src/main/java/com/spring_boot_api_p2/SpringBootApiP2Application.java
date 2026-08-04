@@ -24,5 +24,3 @@ public class SpringBootApiP2Application {
 
 
 
-
-

@@ -19,4 +19,13 @@ public class BaseError<T> {
     private LocalDateTime timestamp;
 
     private T errors;
+    public static <T> BaseError<T> of(Integer code, String message, T errors) {
+        return BaseError.<T>builder()
+                .status(false)
+                .code(code)
+                .message(message)
+                .timestamp(LocalDateTime.now())
+                .errors(errors)
+                .build();
+    }
 }
