@@ -1,4 +1,4 @@
-package com.spring_boot_api_p2.feature.auth.validator;
+package com.spring_boot_api_p2.feature.core.permission.validator;
 
 import com.spring_boot_api_p2.domain.entity.User;
 import com.spring_boot_api_p2.feature.core.role.user.repository.UserRepository;
