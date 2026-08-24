@@ -1,6 +1,7 @@
 package com.spring_boot_api_p2.config;
 
 import com.spring_boot_api_p2.security.JwtAuthFilter;
+import com.spring_boot_api_p2.security.RestAccessDeniedHandler;
 import com.spring_boot_api_p2.security.RestAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,66 +14,60 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.spring_boot_api_p2.security.RestAccessDeniedHandler;
+
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
-
     private final JwtAuthFilter jwtAuthFilter;
     private final RestAuthenticationEntryPoint authenticationEntryPoint;
-    private final RestAccessDeniedHandler accessDeniedHandler;
-
+    private final RestAccessDeniedHandler restAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         return http
-
+                // Allow browser frontends on listed origins to call the API
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                // API uses JSON Bearer tokens — disable CSRF form protection
                 .csrf(AbstractHttpConfigurer::disable)
-
+                // No browser popup login
                 .httpBasic(AbstractHttpConfigurer::disable)
-
+                // No Spring form login page
                 .formLogin(AbstractHttpConfigurer::disable)
-
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        )
+                // Do not create an HttpSession per request
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Write JSON BaseError instead of redirect/HTML on 401
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(restAccessDeniedHandler)
                 )
-                .exceptionHandling(exception ->
-                        exception
-                                .authenticationEntryPoint(authenticationEntryPoint)
-                                .accessDeniedHandler(accessDeniedHandler)
-
-                )
-
                 .authorizeHttpRequests(auth -> auth
+                        // Register, login, change-password — no token required
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/captcha/**").permitAll()
+                        .requestMatchers("/api/test-image/**").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        // OpenAPI / Swagger UI
 
-                        .requestMatchers(
-                                "/api/auth/**"
-                        ).permitAll()
-
-                        .requestMatchers(
-                                "/api/admin/**"
-                        ).hasRole("ADMIN")
-
+                        // Everything else needs a valid JWT in SecurityContext
                         .anyRequest().authenticated()
                 )
-
-                .addFilterBefore(
-                        jwtAuthFilter,
-                        UsernamePasswordAuthenticationFilter.class
-                )
-
+                // JwtAuthFilter runs before Spring's default username/password filter
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-
 }
+
+// Authentication
+// Authorization
+// Create User
+// Update User
+
+// Redis
+
+// captcha

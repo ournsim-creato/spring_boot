@@ -1,4 +1,4 @@
-package com.spring_boot_api_p2.feature.core.role.controller;
+package com.spring_boot_api_p2.feature.core.user.controller;
 
 import com.spring_boot_api_p2.domain.entity.User;
 import com.spring_boot_api_p2.feature.core.role.user.repository.UserRepository;

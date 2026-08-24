@@ -1,4 +1,4 @@
-package com.spring_boot_api_p2.dto.request;
+package com.spring_boot_api_p2.feature.core.menu.dto.request;
 
 import lombok.Data;
 

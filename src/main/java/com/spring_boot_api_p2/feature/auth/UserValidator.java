@@ -1,4 +1,4 @@
-package com.spring_boot_api_p2.feature.core.permission.validator;
+package com.spring_boot_api_p2.feature.auth;
 
 import com.spring_boot_api_p2.domain.entity.User;
 import com.spring_boot_api_p2.feature.core.role.user.repository.UserRepository;
@@ -21,88 +21,111 @@ public class UserValidator {
                     "^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$"
             );
 
+    private static final Pattern PASSWORD_PATTERN =
+            Pattern.compile(
+                    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z\\d]).{8,100}$"
+            );
+
+    private static final int USERNAME_MAX = 100;
     private static final int PASSWORD_MIN = 8;
     private static final int PASSWORD_MAX = 100;
 
-    private static final Pattern PASSWORD_PATTERN =
-            Pattern.compile(
-                    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z\\d]).{8,}$"
-            );
 
     /**
-     * Validate login credentials.
+     * Validate login username and password.
      */
     public User validateLoginCredentials(
             String username,
             String rawPassword
     ) {
 
-        // Check username
+        // 1. Validate username
         if (username == null || username.isBlank()) {
             throw new ValidationException("Username is required");
         }
 
-        // Check password
+        // 2. Validate password
         if (rawPassword == null || rawPassword.isBlank()) {
             throw new ValidationException("Password is required");
         }
 
-        // Normalize username
-        String normalizedUsername =
-                username.trim().toLowerCase();
+        // Do NOT trim password.
+        // Password spaces can technically be part of a password.
+        String normalizedUsername = username.trim();
 
-        // Find user
+        // 3. Find user
         User user = userRepository
-                .findByUsername(normalizedUsername)
-                .orElse(null);
+                .findByUsernameIgnoreCase(normalizedUsername)
+                .orElseThrow(() ->
+                        new ValidationException(
+                                "Invalid username or password"
+                        )
+                );
 
-        // User not found
-        if (user == null) {
-            throw new ValidationException(
-                    "Invalid username or password"
-            );
-        }
-
-        // Account disabled
+        // 4. Check account enabled
         if (!Boolean.TRUE.equals(user.getEnabled())) {
             throw new ValidationException(
                     "Account is disabled"
             );
         }
 
-        // Account locked
+        // 5. Check account locked
         if (!Boolean.TRUE.equals(user.getAccountNonLocked())) {
             throw new ValidationException(
                     "Account is locked"
             );
         }
 
-        // Account expired
+        // 6. Check account expiration
         if (!Boolean.TRUE.equals(user.getAccountNonExpired())) {
             throw new ValidationException(
                     "Account has expired"
             );
         }
 
-        // Credentials expired
+        // 7. Check credentials expiration
         if (!Boolean.TRUE.equals(user.getCredentialsNonExpired())) {
             throw new ValidationException(
                     "User credentials have expired"
             );
         }
+// 8. Check password hash
+        String encodedPassword = user.getPassword();
 
-        // Check password
-        if (!passwordEncoder.matches(
-                rawPassword,
-                user.getPassword()
-        )) {
+        if (encodedPassword == null || encodedPassword.isBlank()) {
             throw new ValidationException(
                     "Invalid username or password"
             );
         }
 
+// Temporary debug information
+        System.out.println("Username = " + normalizedUsername);
+
+        System.out.println(
+                "Password hash exists = "
+                        + !encodedPassword.isBlank()
+        );
+
+        boolean passwordMatches =
+                passwordEncoder.matches(
+                        rawPassword,
+                        encodedPassword
+                );
+
+        System.out.println(
+                "Password matches = " + passwordMatches
+        );
+
+        if (!passwordMatches) {
+            throw new ValidationException(
+                    "Invalid username or password"
+            );
+        }
+
+        // 9. Login validation successful
         return user;
     }
+
 
     /**
      * Validate username/email format.
@@ -115,12 +138,13 @@ public class UserValidator {
             );
         }
 
-        String normalizedUsername =
-                username.trim().toLowerCase();
+        String normalizedUsername = username.trim();
 
-        if (normalizedUsername.length() > 100) {
+        if (normalizedUsername.length() > USERNAME_MAX) {
             throw new ValidationException(
-                    "Username must not exceed 100 characters"
+                    "Username must not exceed "
+                            + USERNAME_MAX
+                            + " characters"
             );
         }
 
@@ -131,17 +155,17 @@ public class UserValidator {
         }
     }
 
+
     /**
-     * Check if username already exists.
+     * Check whether username already exists.
      */
     public void validateUsernameNotExists(String username) {
 
         validateUsername(username);
 
-        String normalizedUsername =
-                username.trim().toLowerCase();
+        String normalizedUsername = username.trim();
 
-        if (userRepository.existsByUsername(
+        if (userRepository.existsByUsernameIgnoreCase(
                 normalizedUsername
         )) {
             throw new ValidationException(
@@ -149,6 +173,7 @@ public class UserValidator {
             );
         }
     }
+
 
     /**
      * Validate password strength.
@@ -158,12 +183,6 @@ public class UserValidator {
         if (password == null || password.isBlank()) {
             throw new ValidationException(
                     "Password is required"
-            );
-        }
-
-        if (!password.equals(password.trim())) {
-            throw new ValidationException(
-                    "Password must not have leading or trailing spaces"
             );
         }
 
@@ -186,7 +205,8 @@ public class UserValidator {
         if (!PASSWORD_PATTERN.matcher(password).matches()) {
             throw new ValidationException(
                     "Password must contain at least one uppercase letter, "
-                            + "one lowercase letter, one number, "
+                            + "one lowercase letter, "
+                            + "one number, "
                             + "and one special character"
             );
         }

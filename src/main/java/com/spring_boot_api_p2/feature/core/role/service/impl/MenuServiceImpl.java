@@ -1,11 +1,11 @@
 package com.spring_boot_api_p2.feature.core.role.service.impl;
 
 import com.spring_boot_api_p2.domain.entity.Menu;
-import com.spring_boot_api_p2.dto.request.MenuRequest;
-import com.spring_boot_api_p2.dto.response.MenuResponse;
+import com.spring_boot_api_p2.feature.core.menu.dto.request.MenuRequest;
+import com.spring_boot_api_p2.feature.core.menu.dto.response.MenuResponse;
 import com.spring_boot_api_p2.exception.ResourceNotFoundException;
 import com.spring_boot_api_p2.feature.core.role.repository.MenuRepository;
-import com.spring_boot_api_p2.feature.core.role.service.MenuService;
+import com.spring_boot_api_p2.feature.core.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

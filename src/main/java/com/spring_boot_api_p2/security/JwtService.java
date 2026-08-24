@@ -9,69 +9,58 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+
+import java.time.Duration;
 import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-
     private final JwtProperties jwtProperties;
+    // generate token
 
-    // Create secret key
-    private SecretKey getSigningKey() {
-
-        return Keys.hmacShaKeyFor(
-                jwtProperties.getSecret()
-                        .getBytes(StandardCharsets.UTF_8)
-        );
-    }
-
-    // Generate JWT token
+    /** Build a signed access token with {@code sub=username} and configured TTL. */
     public String generateToken(String username) {
-
-        SecretKey key = getSigningKey();
-
+        // Derive HMAC key from configured secret (must be long enough for HS256)
+        SecretKey key = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
         Date now = new Date();
-
-        Date expiry = new Date(
-                now.getTime() + jwtProperties.getExpirationMs()
-        );
+        Date expiry = new Date(now.getTime() + jwtProperties.getExpirationMs());
 
         return Jwts.builder()
-                .subject(username)
-                .issuedAt(now)
-                .expiration(expiry)
-                .signWith(key)
+                .subject(username)   // becomes the authenticated principal name
+                .issuedAt(now)       // iat claim
+                .expiration(expiry)  // exp claim — filter rejects tokens past this instant
+                .signWith(key)       // HMAC-SHA256 signature
                 .compact();
     }
-
-    // Get username from JWT token
+    /** Parse and verify the token, then return the subject (username). Caller must validate first. */
     public String getUsernameFromToken(String token) {
-
-        Claims claims = Jwts.parser()
-                .verifyWith(getSigningKey())
+        SecretKey key = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
+        Claims payload = Jwts.parser()
+                .verifyWith(key)     // verify signature before reading claims
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-
-        return claims.getSubject();
+        return payload.getSubject();
     }
 
-    // Validate JWT token
+    /**
+     * Return {@code true} only when signature is valid and token is not expired.
+     * Any parse/verify failure is swallowed — filter treats it as "no auth".
+     */
     public boolean validateToken(String token) {
-
         try {
-
-            Jwts.parser()
-                    .verifyWith(getSigningKey())
-                    .build()
-                    .parseSignedClaims(token);
-
+            SecretKey key = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
+            Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
             return true;
-
         } catch (Exception e) {
-
+            //log.debug("Invalid JWT: {}", e.getMessage());
             return false;
         }
     }
+
+    public Duration getExpirationDuration() {
+        return Duration.ofMillis(jwtProperties.getExpirationMs());
+    }
+
 }

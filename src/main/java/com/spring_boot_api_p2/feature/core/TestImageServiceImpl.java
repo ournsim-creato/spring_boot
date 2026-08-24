@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
-public class TestServiceImpl implements TestImageService {
+public class TestImageServiceImpl implements TestImageService {
      private final FileStorageService fileStorageService;
      private static final  String PROFILE_IMAGE_DIR ="profiles";
 

@@ -1,8 +1,8 @@
-package com.spring_boot_api_p2.feature.core.role.controller;
+package com.spring_boot_api_p2.feature.core.menu.controller;
 
-import com.spring_boot_api_p2.dto.request.MenuRequest;
-import com.spring_boot_api_p2.dto.response.MenuResponse;
-import com.spring_boot_api_p2.feature.core.role.service.MenuService;
+import com.spring_boot_api_p2.feature.core.menu.dto.request.MenuRequest;
+import com.spring_boot_api_p2.feature.core.menu.dto.response.MenuResponse;
+import com.spring_boot_api_p2.feature.core.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
-package com.spring_boot_api_p2.feature.core.role.controller;
+package com.spring_boot_api_p2.feature.core.permission.controller;
 
-import com.spring_boot_api_p2.feature.core.role.service.PermissionService;
+import com.spring_boot_api_p2.feature.core.permission.service.PermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

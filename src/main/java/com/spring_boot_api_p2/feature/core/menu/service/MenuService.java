@@ -1,7 +1,7 @@
-package com.spring_boot_api_p2.feature.core.role.service;
+package com.spring_boot_api_p2.feature.core.menu.service;
 
-import com.spring_boot_api_p2.dto.request.MenuRequest;
-import com.spring_boot_api_p2.dto.response.MenuResponse;
+import com.spring_boot_api_p2.feature.core.menu.dto.request.MenuRequest;
+import com.spring_boot_api_p2.feature.core.menu.dto.response.MenuResponse;
 
 import java.util.List;
 

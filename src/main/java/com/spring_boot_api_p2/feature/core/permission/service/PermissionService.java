@@ -1,7 +1,7 @@
-package com.spring_boot_api_p2.feature.core.role.service;
+package com.spring_boot_api_p2.feature.core.permission.service;
 
-import com.spring_boot_api_p2.dto.request.PermissionRequest;
-import com.spring_boot_api_p2.dto.response.PermissionResponse;
+import com.spring_boot_api_p2.feature.core.permission.dto.request.PermissionRequest;
+import com.spring_boot_api_p2.feature.core.permission.dto.response.PermissionResponse;
 
 import java.util.List;
 

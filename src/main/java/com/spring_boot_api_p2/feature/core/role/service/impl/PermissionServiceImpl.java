@@ -1,8 +1,8 @@
 package com.spring_boot_api_p2.feature.core.role.service.impl;
 
-import com.spring_boot_api_p2.dto.request.PermissionRequest;
-import com.spring_boot_api_p2.dto.response.PermissionResponse;
-import com.spring_boot_api_p2.feature.core.role.service.PermissionService;
+import com.spring_boot_api_p2.feature.core.permission.dto.request.PermissionRequest;
+import com.spring_boot_api_p2.feature.core.permission.dto.response.PermissionResponse;
+import com.spring_boot_api_p2.feature.core.permission.service.PermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
