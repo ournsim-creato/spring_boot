@@ -9,9 +9,7 @@ import com.spring_boot_api_p2.feature.core.role.normalizer.RoleNormalizer;
 import com.spring_boot_api_p2.feature.core.role.repository.RoleRepository;
 import com.spring_boot_api_p2.feature.core.role.service.RoleService;
 import com.spring_boot_api_p2.feature.core.role.validator.RoleValidator;
-import com.spring_boot_api_p2.mapper.RoleMapper;
 import com.spring_boot_api_p2.specification.RoleSpecification;
-import com.spring_boot_api_p2.specification.RoleSpecificationOld;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +19,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -32,7 +29,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
-
+import com.spring_boot_api_p2.mapper.RoleMapper;
 @Slf4j
 @RequiredArgsConstructor
 @Service

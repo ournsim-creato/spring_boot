@@ -25,4 +25,9 @@ public class TokenServiceImpl implements TokenService {
         );
         return AuthResponse.of(token,user);
     }
+
+    @Override
+    public AuthResponse issue(com.spring_boot_api_p2.feature.core.user.dto.response.UserResponse user) {
+        return null;
+    }
 }

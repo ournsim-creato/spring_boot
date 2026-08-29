@@ -1,9 +1,6 @@
 package com.spring_boot_api_p2.config;
 
-import com.spring_boot_api_p2.security.JwtAuthFilter;
 import com.spring_boot_api_p2.security.RestAccessDeniedHandler;
-import com.spring_boot_api_p2.security.RestAuthenticationEntryPoint;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -15,9 +12,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.spring_boot_api_p2.security.JwtAuthFilter;
+import com.spring_boot_api_p2.security.RestAuthenticationEntryPoint;
+
+import lombok.RequiredArgsConstructor;
+
 @Configuration
-@EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final RestAuthenticationEntryPoint authenticationEntryPoint;
@@ -45,9 +47,13 @@ public class SecurityConfig {
                         // Register, login, change-password — no token required
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/captcha/**").permitAll()
-                        .requestMatchers("/api/test-image/**").permitAll()
+                        .requestMatchers("/api/profile-image/**").permitAll()
+
+                        // ** បន្ថែមបន្ទាត់នេះចូលទីនេះ ដើម្បីបើកឱ្យ API របស់ User ទាំងអស់អាចចូលបានដោយមិនបាច់ Token **
+                        .requestMatchers("/api/users/**").permitAll()
+
                         .requestMatchers("/error").permitAll()
-                        // OpenAPI / Swagger UI
+                        // OpenAPI / Swagger UI help
 
                         // Everything else needs a valid JWT in SecurityContext
                         .anyRequest().authenticated()

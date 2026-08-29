@@ -31,4 +31,6 @@ public class UserResponse {
     // User roles
     private Set<String> roles;
 
+    public void setProfile(String profileUrl) {
+    }
 }

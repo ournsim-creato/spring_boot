@@ -12,13 +12,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthResponse {
 
-    private String Token;
-    private String Type;
+    // ប្តូរមកអក្សរតូចវិញ ដើម្បីឱ្យ Jackson serialize ត្រូវ standard JSON
+    private String token;
+    private String type;
     private UserResponse user;
-    public static AuthResponse of (String token, UserResponse user){
-        return  AuthResponse.builder()
-                .Token(token)
-                .Type("Bearer")
+
+    public static AuthResponse of(String token, UserResponse user) {
+        return AuthResponse.builder()
+                .token(token) // កែជា token (អក្សរតូច)
+                .type("Bearer") // កែជា type (អក្សរតូច)
                 .user(user)
                 .build();
     }

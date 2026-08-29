@@ -1,9 +1,11 @@
 package com.spring_boot_api_p2.feature.auth.service;
 
 import com.spring_boot_api_p2.feature.auth.dto.response.AuthResponse;
-import com.spring_boot_api_p2.feature.core.role.user.response.UserResponse;
+// ត្រូវប្រាកដថា import UserResponse ពី dto.response នេះ
+import com.spring_boot_api_p2.feature.core.user.dto.response.UserResponse;
 
 public interface TokenService {
-    AuthResponse issue(UserResponse user);
+    AuthResponse issue(com.spring_boot_api_p2.feature.core.role.user.response.UserResponse user);
 
+    AuthResponse issue(UserResponse user);
 }

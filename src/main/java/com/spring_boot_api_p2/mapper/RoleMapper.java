@@ -5,13 +5,14 @@ import com.spring_boot_api_p2.feature.core.role.dto.request.RoleRequest;
 import com.spring_boot_api_p2.feature.core.role.dto.response.RoleResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface RoleMapper {
 
     Role toEntity(RoleRequest request);
 
-    RoleResponse toResponse(Role permission);
+    RoleResponse toResponse(Role role);
 
-    void updateEntity(@MappingTarget Role target, RoleRequest request);
+    void updateEntity(@MappingTarget Role role, RoleRequest request);
 }

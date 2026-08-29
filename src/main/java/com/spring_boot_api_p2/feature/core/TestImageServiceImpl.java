@@ -8,13 +8,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class TestImageServiceImpl implements TestImageService {
-     private final FileStorageService fileStorageService;
-     private static final  String PROFILE_IMAGE_DIR ="profiles";
-
+    private final FileStorageService fileStorageService;
+    private static final String PROFILE_IMAGE_DIR = "profiles";
 
     @Override
     public void testImage(MultipartFile file) {
         fileStorageService.storeImage(file, PROFILE_IMAGE_DIR);
-
     }
 }

@@ -6,7 +6,7 @@ import com.spring_boot_api_p2.feature.auth.dto.request.LoginRequest;
 import com.spring_boot_api_p2.feature.auth.dto.response.AuthResponse;
 import com.spring_boot_api_p2.feature.auth.service.AuthService;
 import com.spring_boot_api_p2.feature.auth.service.TokenService;
-import com.spring_boot_api_p2.feature.core.role.user.mapper.UserMapper;
+import com.spring_boot_api_p2.mapper.UserMapper; //  ប្តូរមកកាន់ Import ត្រឹមត្រូវនេះ
 import com.spring_boot_api_p2.feature.intergration.service.CaptchaService;
 import com.spring_boot_api_p2.property.CaptchaProperties;
 import lombok.RequiredArgsConstructor;
