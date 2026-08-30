@@ -1,10 +1,7 @@
 package com.spring_boot_api_p2.config;
 
 
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.SetBucketPolicyArgs;
+import io.minio.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -90,6 +87,15 @@ public class MinioConfig {
             } catch (Exception e) {
                 log.warn("Could not verify/create MinIO bucket '{}': {}", bucket, e.getMessage());
             }
+            // Delete any existing public access policies to force private access & presigned URLs
+            try {
+                minioClient.deleteBucketPolicy(
+                        DeleteBucketPolicyArgs.builder().bucket(bucket).build());
+                log.info("Bucket '{}' policy cleared. Access restricted to presigned URLs only.", bucket);
+            } catch (Exception e) {
+                // Ignored if policy is already empty
+            }
+
         };
     }
 }

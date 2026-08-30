@@ -47,6 +47,7 @@ public class SecurityConfig {
                         // Register, login, change-password — no token required
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/captcha/**").permitAll()
+                        .requestMatchers("/api/files/view/**").permitAll()
                         .requestMatchers("/api/profile-image/**").permitAll()
 
                         // ** បន្ថែមបន្ទាត់នេះចូលទីនេះ ដើម្បីបើកឱ្យ API របស់ User ទាំងអស់អាចចូលបានដោយមិនបាច់ Token **
