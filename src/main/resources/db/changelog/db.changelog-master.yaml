@@ -11,3 +11,5 @@ databaseChangeLog:
   - include:
       file: db/changelog/schema/0005_create_user_role_table.yml
 
+  - include:
+      file: db/changelog/schema/0006_create_otp_table.yml

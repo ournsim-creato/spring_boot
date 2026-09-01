@@ -24,6 +24,21 @@ spring:
       password:
       timeout: 2s
 
+  mail:
+        host: smtp.gmail.com
+        port: 587
+        username: ournsim@gmail.com
+        password: seua jfnr lktr llej
+        properties:
+          mail:
+            smtp:
+              auth: true
+              starttls:
+                enable: true  # required for port 587 (TLS upgrade)
+              connectiontimeout: 5000
+              timeout: 3000
+              writetimeout: 5000
+
 jwt:
   secret: ${JWT_SECRET:change-me-to-a-long-random-secret-at-least-32-bytes-please}
   expiration-ms: ${JWT_EXPIRATION_MS:86400000}
@@ -46,3 +61,9 @@ minio:
   bucket: ${MINIO_BUCKET:urp-redis}
   max-size-mb: ${MINIO_MAX_SIZE_MB:1}
   create-bucket-if-missing: ${MINIO_CREATE_BUCKET:true}
+
+  otp:
+    secret-key: ${OTP_SECRET_KEY:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=}
+    ttl-minutes: ${OTP_TTL_MINUTES:10}           # code validity window
+    max-send-count: ${OTP_MAX_SEND_COUNT:5}      # lockout after N sends
+    cooldown-minutes: ${OTP_COOLDOWN_MINUTES:5}  # min gap between resends
