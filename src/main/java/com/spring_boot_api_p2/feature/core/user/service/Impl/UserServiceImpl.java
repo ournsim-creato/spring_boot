@@ -2,7 +2,7 @@ package com.spring_boot_api_p2.feature.core.user.service.Impl;
 
 import com.spring_boot_api_p2.domain.entity.User;
 import com.spring_boot_api_p2.exception.ResourceNotFoundException;
-import com.spring_boot_api_p2.feature.core.role.user.repository.UserRepository;
+import com.spring_boot_api_p2.feature.core.user.repository.UserRepository;
 import com.spring_boot_api_p2.mapper.UserMapper;
 import com.spring_boot_api_p2.feature.core.user.dto.response.UserResponse;
 import com.spring_boot_api_p2.feature.core.user.service.UserService;

@@ -1,6 +1,6 @@
 package com.spring_boot_api_p2.security;
 import com.spring_boot_api_p2.domain.entity.User;
-import com.spring_boot_api_p2.feature.core.role.user.repository.UserRepository;
+import com.spring_boot_api_p2.feature.core.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;

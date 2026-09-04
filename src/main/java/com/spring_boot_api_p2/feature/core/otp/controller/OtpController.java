@@ -1,7 +1,8 @@
 package com.spring_boot_api_p2.feature.core.otp.controller;
 
-
+import com.spring_boot_api_p2.feature.core.otp.dto.request.ResetPasswordRequest;
 import com.spring_boot_api_p2.feature.core.otp.dto.request.SendOtpRequest;
+import com.spring_boot_api_p2.feature.core.otp.dto.request.VerifyOtpRequest;
 import com.spring_boot_api_p2.feature.core.otp.service.OtpService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,25 +12,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-@RestController       // JSON REST controller
-@RequestMapping("/api/otp") // base path for every method below
-@RequiredArgsConstructor // Lombok: inject final fields via constructor
+@RestController
+@RequestMapping("/api/otp")
+@RequiredArgsConstructor
 public class OtpController {
 
-    // Business logic lives in the service — controller stays thin
     private final OtpService otpService;
 
-    @PostMapping("/send") // POST /api/otp/send
+    // Step 1: Send OTP to user's email
+    @PostMapping("/send")
     public ResponseEntity<?> sendOtp(
-            @Valid // run Bean Validation on the request body (shape only)
+            @Valid
             @RequestBody SendOtpRequest request) {
 
-        // Throws ValidationException on failure → GlobalExceptionHandler → 400
         otpService.sendOtp(request);
-
-        // No data payload — just { status: 200, title: "OK", … }
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok().build();
     }
 
+    // Step 2: Verify OTP
+    @PostMapping("/verify")
+    public ResponseEntity<?> verifyOtp(
+            @Valid
+            @RequestBody VerifyOtpRequest request) {
+
+        otpService.verifyOtp(request);
+        return ResponseEntity.ok().build();
+    }
+
+    // Step 3: Reset Password
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(
+            @Valid
+            @RequestBody ResetPasswordRequest request) {
+
+        otpService.resetPassword(request);
+        return ResponseEntity.ok().build();
+    }
 }

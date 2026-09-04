@@ -1,7 +1,7 @@
 package com.spring_boot_api_p2.feature.auth;
 
 import com.spring_boot_api_p2.domain.entity.User;
-import com.spring_boot_api_p2.feature.core.role.user.repository.UserRepository;
+import com.spring_boot_api_p2.feature.core.user.repository.UserRepository;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

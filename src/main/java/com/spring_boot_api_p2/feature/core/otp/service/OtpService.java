@@ -3,6 +3,7 @@ package com.spring_boot_api_p2.feature.core.otp.service;
 import com.spring_boot_api_p2.feature.core.otp.dto.request.ResetPasswordRequest;
 import com.spring_boot_api_p2.feature.core.otp.dto.request.SendOtpRequest;
 import com.spring_boot_api_p2.feature.core.otp.dto.request.VerifyOtpRequest;
+import com.spring_boot_api_p2.feature.core.otp.service.OtpService;
 
 public interface OtpService {
     void sendOtp(SendOtpRequest request);
